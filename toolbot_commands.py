@@ -29,7 +29,7 @@ class Toolbot_Commands:
 	
 	def help(self, HelpDict):
 		if len(self.cmd) == 1:
-			self.S.send('PRIVMSG '+self.rto+' :ToolBot Commands: public[help|whois|isup|query|proxy|rnd|choose] owner[msg|join|part|nick|ctcp]\n')
+			self.S.send('PRIVMSG '+self.rto+' :ToolBot Commands: public[help|whois|isup|query|proxy|rnd|choose] owner[msg|action|join|part|nick|ctcp|owner|quit]\n')
 		if len(self.cmd) == 2 and self.cmd[1] in HelpDict:
 			self.S.send('PRIVMSG '+self.rto+' :'+HelpDict[self.cmd[1].lower()]+'\n')
 	

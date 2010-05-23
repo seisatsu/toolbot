@@ -134,6 +134,9 @@ def ParseMsg(msg, S, authowner, HelpDict, OptDict):
 			if cmd[0].lower() == 'msg' and len(cmd) >= 3: #Send message
 				S.send('PRIVMSG '+cmd[1]+' :'+' '.join(cmd[2:])+'\n')
 			
+			if cmd[0].lower() == 'action' and len(cmd) >= 3: #Send action
+				S.send('PRIVMSG '+cmd[1]+' :\01ACTION '+' '.join(cmd[2:])+'\01\n')
+			
 			if cmd[0].lower() == 'join' and len(cmd) == 2: #Make ToolBot join a channel
 				S.send('JOIN '+cmd[1]+'\n')
 			
@@ -144,21 +147,21 @@ def ParseMsg(msg, S, authowner, HelpDict, OptDict):
 				S.send('NICK '+cmd[1]+'\n')
 			
 			if cmd[0].lower() == 'ctcp' and len(cmd) >= 2: #Send CTCP command
-				S.send('PRIVMSG '+cmd[1]+' :'+u'\u0001'+' '.join(cmd[2:])+u'\u0001'+'\n')
+				S.send('PRIVMSG '+cmd[1]+' :\01'+' '.join(cmd[2:])+'\01\n')
 			
 			if cmd[0].lower() == 'owner' and len(cmd) >= 3: #Add/remove owner
 				if cmd[1].lower() == 'add':
 					for nick in cmd[2:]:
-						OptDict['OWNER'].append(nick)
+						OptDict['OWNER'].append(nick+'@'+OptDict['HOST'])
 				if cmd[1].lower() == 'remove':
 					for nick in cmd[2:]:
 						if nick in OptDict['OWNER']:
-							OptDict['OWNER'].remove(nick)
+							OptDict['OWNER'].remove(nick+'@'+OptDict['HOST'])
 		
 		if msgpart[0] == '_' and sender[1] in authowner: #Treat msgs with _ as explicit command to send to server
 			cmd = msgpart[1:]
 			S.send(cmd+'\n')
-			if cmd.lower() == 'quit':
+			if cmd.lower() == 'exit':
 				S.close()
 				sys.exit(0)
 
@@ -177,12 +180,14 @@ def main():
 		'proxy':	'PUBLIC; Return a working proxy from the list. Usage: ^proxy',
 		'rnd':		'PUBLIC; Return a random integer. Usage: ^rnd <min> <max>',
 		'choose':	'PUBLIC; Choose one item from a list of choices. Usage: ^choose <a> <b> [c] ...',
-		'msg':		'OWNER; Sends a message to nick or channel. Usage: ^msg <nick|channel>',
+		'msg':		'OWNER; Sends a message to nick or channel. Usage: ^msg <nick|channel> <message>',
+		'action':		'OWNER; Sends an action/emote to nick or channel. Usage: ^action <nick|channel> <message>',
 		'join':		'OWNER; Tells ToolBot to join a channel. Usage: ^join <channel>',
 		'part':		'OWNER; Tells ToolBot to part from a channel. Usage: ^part <channel>',
 		'nick':		'OWNER; Changes ToolBot\'s nickname. Usage: ^nick <nick>',
 		'ctcp':		'OWNER; Send a CTCP command. Usage: ^ctcp <dest> <command> [args]',
-		'owner':	'OWNER; Add/remove nick(s) from owner list. Usage: ^owner <add/remove> <nick 1> [nick 2] ...'
+		'owner':	'OWNER; Add/remove nick(s) from owner list. Usage: ^owner <add/remove> <nick 1> [nick 2] ...',
+		'quit':		'OWNER; Quit with optional message. Usage: ^quit [message]',
 	}
 	
 	S = socket.socket()
