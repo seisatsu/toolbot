@@ -112,17 +112,8 @@ def ParseMsg(msg, S, authowner, HelpDict, OptDict):
 			if cmd[0].lower() == 'help': #Help command
 				TB_Cmd.help(HelpDict)
 			
-			if cmd[0].lower() == 'whois' and len(cmd) == 2: #Whois command
-				TB_Cmd.whois()
-			
-			if cmd[0].lower() == 'isup' and (len(cmd) == 2 or len(cmd) == 3): #Isup command
-				TB_Cmd.isup()
-			
-			if cmd[0].lower() == 'query' and len(cmd) == 2: #Query command
-				TB_Cmd.query(OptDict)
-			
-			if cmd[0].lower() == 'proxy': #Proxy command
-				TB_Cmd.proxy()
+			if cmd[0].lower() == 'sigil' and len(cmd) >= 2: #Sigil command
+				TB_Cmd.sigil()
 			
 			if cmd[0].lower() == 'rnd' and len(cmd) == 3: #Rnd command
 				TB_Cmd.rnd()
@@ -174,10 +165,7 @@ def main():
 	authowner = []
 	HelpDict = { #Dictionary of help info
 		'help':		'PUBLIC; Prints help information. Usage: ^help [command]',
-		'whois':	'PUBLIC; Performs whois on specified domain. Usage: ^whois <domain>',
-		'isup':		'PUBLIC; Checks if host is up. Usage: ^isup <host> [port]',
-		'query':	'PUBLIC; Query ToolBot for information. Usage: ^query <os|owners|date>',
-		'proxy':	'PUBLIC; Return a working proxy from the list. Usage: ^proxy',
+		'sigil':	'PUBLIC; Sigilizes a phrase. Usage: ^sigil [phrase]',
 		'rnd':		'PUBLIC; Return a random integer. Usage: ^rnd <min> <max>',
 		'choose':	'PUBLIC; Choose one item from a list of choices. Usage: ^choose <a> <b> [c] ...',
 		'msg':		'OWNER; Sends a message to nick or channel. Usage: ^msg <nick|channel> <message>',
