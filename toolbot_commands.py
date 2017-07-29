@@ -8,16 +8,6 @@
 
 import platform, os, random, subprocess, socket, time, hashlib, binascii
 
-def randomProxy(): #Return a random line from the proxy list
-	proxylist='proxylist.txt'
-	proxyfile=open(proxylist,'r')
-	file_size=os.stat(proxylist)[6]
-	proxyfile.seek((proxyfile.tell()+random.randint(0,file_size-1))%file_size)
-	proxyfile.readline()
-	proxy=proxyfile.readline()
-	proxyfile.close()
-	return proxy
-
 class Toolbot_Commands:
 	"""Container for Toolbot commands"""
 	
